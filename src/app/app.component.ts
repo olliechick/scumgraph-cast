@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +8,9 @@ import {Component, OnInit} from '@angular/core';
 export class AppComponent implements OnInit {
   players: { name: string, colour: string }[] = [];
   rows: { name: string, colour: string }[][] = [];
+
+  constructor(private ngZone: NgZone) {
+  }
 
   ngOnInit() {
     this.updateRows();
@@ -39,28 +42,33 @@ export class AppComponent implements OnInit {
     context.addCustomMessageListener(PLAYER_LIST_CHANNEL, customEvent => {
       const players = customEvent.data.players;
       players.forEach(item => item.colour = decimalToAARRGGBBHexTwosComplement(item.colour));
-      this.players = players;
+      this.ngZone.run(() => this.players = players);
       this.updateRows();
     });
     context.start();
   }
 
   addPlayer() { // for debugging purposes only
-    this.players.push({name: 'New player', colour: '#00ffff'});
+    // this.players.push({name: 'New player', colour: '#ffbfa9'});
+    const players = [
+      {name: 'test', colour: '#f298ff'},
+      {name: '', colour: '#2a2a2a'},
+      {name: '', colour: '#2a2a2a'},
+      {name: '', colour: '#2a2a2a'}
+    ];
+    this.ngZone.run(() => this.players = players);
+
     this.updateRows();
   }
 
   updateRows() {
     const emptyRow = [
-      {name: ' ', colour: 'white'},
-      {name: ' ', colour: 'white'},
-      {name: ' ', colour: 'white'},
-      {name: ' ', colour: 'white'}
+      {name: '', colour: '#2a2a2a'},
+      {name: '', colour: '#2a2a2a'},
+      {name: '', colour: '#2a2a2a'},
+      {name: '', colour: '#2a2a2a'}
     ];
 
-    const len = Math.floor((this.players.length - 1) / 4);
-    console.log('Length:');
-    console.log(len);
     const rows: { name: string, colour: string }[][] = [[...emptyRow]];
     for (let i = 0; i < 3; i++) {
       rows.push([...emptyRow]);
@@ -70,6 +78,17 @@ export class AppComponent implements OnInit {
       rows[Math.floor(i / 4)][i % 4] = player;
     });
 
-    this.rows = rows;
+    this.ngZone.run(() => this.rows = rows);
+  }
+
+  getTextColour(colour: string) {
+    const red = parseInt(colour.slice(1, 3), 16);
+    const green = parseInt(colour.slice(3, 5), 16);
+    const blue = parseInt(colour.slice(5, 7), 16);
+
+    // https://en.wikipedia.org/wiki/YIQ
+    // https://24ways.org/2010/calculating-color-contrast/
+    const yiq = (red * 299 + green * 587 + blue * 114) / 1000;
+    return yiq < 192 ? 'white' : 'black';
   }
 }

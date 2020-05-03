@@ -1,10 +1,16 @@
 <div class="main">
   <div class="board">
-    <h1>Add your players!</h1>
+    <h1 (click)="addPlayer()">Add your players!</h1>
+
     <div class="row" *ngFor="let row of rows">
       <ng-container *ngFor="let player of row">
-        <mat-card [style.backgroundColor]=player.colour (click)="addPlayer()">{{player.name}}</mat-card>
+        <mat-card class="card"
+                  [style.backgroundColor]=player.colour
+                  [style.color]="getTextColour(player.colour)"
+                  [style.font-size]="'2em'">{{player.name}}
+        </mat-card>
       </ng-container>
     </div>
+    <div style="text-align:center">v 2020-05-03 11:30pm</div>
   </div>
 </div>
