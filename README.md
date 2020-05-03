@@ -1,6 +1,8 @@
 # Scum graph cast
 
-A Chromecast receiver app used by the Android app Scum graph, currently being developed at https://github.com/olliechick/scumgraph. This website is hosted at https://olliechick.co.nz/scumgraph-cast/ (although you can't do much if you visit this URL using a regular web browser).
+A Chromecast receiver app used by the Android app Scum graph, currently being developed at https://github.com/olliechick/scumgraph.
+
+This website is hosted at https://olliechick.co.nz/scumgraph-cast (although you can't do much if you visit this URL using a regular web browser).
 
 ## Development server
 
