@@ -1,5 +1,5 @@
 <div class="main">
-  <div class="board">
+  <div *ngIf="mode == 'player-selection'" class="board">
     <h1 (click)="addPlayer()">Add your players!</h1>
 
     <div class="row" *ngFor="let row of rows">
@@ -7,10 +7,35 @@
         <mat-card class="card"
                   [style.backgroundColor]=player.colour
                   [style.color]="getTextColour(player.colour)"
-                  [style.font-size]="'2em'">{{player.name}}
+                  [style.font-size]="'1.5em'">{{player.name}}
         </mat-card>
       </ng-container>
     </div>
-    <div style="text-align:center">v 2020-05-03 11:30pm</div>
+    <div style="text-align:center">v 2020-06-13 5:30pm. Mode: {{mode}}</div>
+  </div>
+  <div *ngIf="mode == 'chart'">
+    <h1>{{mode}}</h1>
+    <ngx-charts-bar-vertical
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="single"
+      [gradient]="gradient"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [legend]="showLegend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel">
+      <!--      (select)="onSelect($event)"-->
+    </ngx-charts-bar-vertical>
+  </div>
+
+  <div *ngIf="mode == 'none'">
+    <h1>No mode selected.</h1>
+    <p>
+      Are you viewing this on something that isn't a Chromecast?
+      Go to <a href="https://olliechick.co.nz/scumgraph">olliechick.co.nz/scumgraph</a> for more information.
+    </p>
   </div>
 </div>
