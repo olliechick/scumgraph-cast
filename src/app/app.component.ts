@@ -10,18 +10,15 @@ export class AppComponent implements OnInit {
   rows: { name: string, colour: string }[][] = [];
   mode: 'none' | 'player-selection' | 'chart' = 'none';
 
-  view: any[] = [600, 400];
-
   // options for the chart
   showXAxis = true;
   showYAxis = true;
   gradient = false;
   showLegend = true;
   showXAxisLabel = true;
-  xAxisLabel = 'Country';
+  xAxisLabel = 'Round';
   showYAxisLabel = true;
-  yAxisLabel = 'Sales';
-  timeline = true;
+  yAxisLabel = 'Score';
 
   colorScheme = {
     domain: ['#9370DB', '#87CEFA', '#FA8072', '#FF7F50', '#90EE90', '#9370DB']
@@ -33,116 +30,78 @@ export class AppComponent implements OnInit {
   // data goes here
   public single = [
     {
-      name: 'China',
-      value: 2243772
-    },
-    {
-      name: 'USA',
-      value: 1126000
-    },
-    {
-      name: 'Norway',
-      value: 296215
-    },
-    {
-      name: 'Japan',
-      value: 257363
-    },
-    {
-      name: 'Germany',
-      value: 196750
-    },
-    {
-      name: 'France',
-      value: 204617
-    }
-  ];
-
-  public multi = [
-    {
-      name: 'China',
+      name: 'Player 1',
       series: [
         {
-          name: '2018',
-          value: 2243772
+          value: 0,
+          name: 0
         },
         {
-          name: '2017',
-          value: 1227770
+          value: 1,
+          name: 1
+        },
+        {
+          value: 2,
+          name: 2
+        },
+        {
+          value: 3,
+          name: 3
         }
       ]
     },
-
     {
-      name: 'USA',
+      name: 'Player 2',
       series: [
         {
-          name: '2018',
-          value: 1126000
+          value: 0,
+          name: 0
         },
         {
-          name: '2017',
-          value: 764666
+          value: 0,
+          name: 1
+        },
+        {
+          value: 0,
+          name: 2
+        },
+        {
+          value: -1,
+          name: 3
         }
       ]
     },
-
     {
-      name: 'Norway',
+      name: 'Player 3',
       series: [
         {
-          name: '2018',
-          value: 296215
+          value: 0,
+          name: 0
         },
         {
-          name: '2017',
-          value: 209122
-        }
-      ]
-    },
-
-    {
-      name: 'Japan',
-      series: [
-        {
-          name: '2018',
-          value: 257363
+          value: -1,
+          name: 1
         },
         {
-          name: '2017',
-          value: 205350
-        }
-      ]
-    },
-
-    {
-      name: 'Germany',
-      series: [
-        {
-          name: '2018',
-          value: 196750
+          value: -2,
+          name: 2
         },
         {
-          name: '2017',
-          value: 129246
-        }
-      ]
-    },
-
-    {
-      name: 'France',
-      series: [
-        {
-          name: '2018',
-          value: 204617
-        },
-        {
-          name: '2017',
-          value: 149797
+          value: -2,
+          name: 3
         }
       ]
     }
   ];
+
+  formatYAxisTick(value) {
+    console.log(value);
+    if (Number.isInteger(value)) {
+      return value;
+    } else {
+      return '';
+    }
+  }
 
   constructor(private ngZone: NgZone) {
   }

@@ -13,10 +13,9 @@
     </div>
     <div style="text-align:center">v 2020-06-13 5:30pm. Mode: {{mode}}</div>
   </div>
-  <div *ngIf="mode == 'chart'">
-    <h1>{{mode}}</h1>
-    <ngx-charts-bar-vertical
-      [view]="view"
+  <div *ngIf="mode == 'chart'" class="chart">
+    <h1>Scum graph</h1>
+    <ngx-charts-line-chart
       [scheme]="colorScheme"
       [results]="single"
       [gradient]="gradient"
@@ -26,9 +25,13 @@
       [showXAxisLabel]="showXAxisLabel"
       [showYAxisLabel]="showYAxisLabel"
       [xAxisLabel]="xAxisLabel"
-      [yAxisLabel]="yAxisLabel">
-      <!--      (select)="onSelect($event)"-->
-    </ngx-charts-bar-vertical>
+      [yAxisLabel]="yAxisLabel"
+      [yAxisTickFormatting]="formatYAxisTick"
+      [xAxisTickFormatting]="formatYAxisTick"
+      [showGridLines]="false"
+      [xScaleMin]="0"
+    >
+    </ngx-charts-line-chart>
   </div>
 
   <div *ngIf="mode == 'none'">
