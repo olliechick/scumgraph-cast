@@ -1,6 +1,6 @@
 <div class="main">
   <div *ngIf="mode == 'player-selection'" class="board">
-    <h1 (click)="addPlayer()">Add your players!</h1>
+    <h1>Add your players!</h1>
 
     <div class="row" *ngFor="let row of rows">
       <ng-container *ngFor="let player of row">
@@ -11,13 +11,13 @@
         </mat-card>
       </ng-container>
     </div>
-    <div style="text-align:center">v 2020-06-13 5:30pm. Mode: {{mode}}</div>
+    <div style="text-align:center">v 2020-06-14 7pm</div>
   </div>
   <div *ngIf="mode == 'chart'" class="chart">
     <h1>Scum graph</h1>
     <ngx-charts-line-chart
       [scheme]="colorScheme"
-      [results]="single"
+      [results]="chartData"
       [gradient]="gradient"
       [xAxis]="showXAxis"
       [yAxis]="showYAxis"
@@ -26,19 +26,20 @@
       [showYAxisLabel]="showYAxisLabel"
       [xAxisLabel]="xAxisLabel"
       [yAxisLabel]="yAxisLabel"
-      [yAxisTickFormatting]="formatYAxisTick"
-      [xAxisTickFormatting]="formatYAxisTick"
-      [showGridLines]="false"
-      [xScaleMin]="0"
+      [yAxisTickFormatting]="formatAxisTick"
+      [xAxisTickFormatting]="formatAxisTick"
+      [showGridLines]="showGridLines"
+      [xScaleMin]="xScaleMin"
     >
     </ngx-charts-line-chart>
   </div>
 
   <div *ngIf="mode == 'none'">
-    <h1>No mode selected.</h1>
+    <h1>Loading scum graph...</h1>
     <p>
       Are you viewing this on something that isn't a Chromecast?
       Go to <a href="https://olliechick.co.nz/scumgraph">olliechick.co.nz/scumgraph</a> for more information.
     </p>
+    <div style="text-align:center">v 2020-06-14 7pm</div>
   </div>
 </div>

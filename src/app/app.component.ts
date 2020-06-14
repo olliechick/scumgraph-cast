@@ -9,6 +9,7 @@ export class AppComponent implements OnInit {
   players: { name: string, colour: string }[] = [];
   rows: { name: string, colour: string }[][] = [];
   mode: 'none' | 'player-selection' | 'chart' = 'none';
+  chartData = null;
 
   // options for the chart
   showXAxis = true;
@@ -19,89 +20,12 @@ export class AppComponent implements OnInit {
   xAxisLabel = 'Round';
   showYAxisLabel = true;
   yAxisLabel = 'Score';
+  showGridLines = false;
+  xScaleMin = 0;
 
   colorScheme = {
-    domain: ['#9370DB', '#87CEFA', '#FA8072', '#FF7F50', '#90EE90', '#9370DB']
+    domain: ['#9370DB', '#87CEFA', '#FA8072', '#FF7F50', '#90EE90', '#9370DB'] // todo use colours specified by user
   };
-
-  // pie
-  showLabels = true;
-
-  // data goes here
-  public single = [
-    {
-      name: 'Player 1',
-      series: [
-        {
-          value: 0,
-          name: 0
-        },
-        {
-          value: 1,
-          name: 1
-        },
-        {
-          value: 2,
-          name: 2
-        },
-        {
-          value: 3,
-          name: 3
-        }
-      ]
-    },
-    {
-      name: 'Player 2',
-      series: [
-        {
-          value: 0,
-          name: 0
-        },
-        {
-          value: 0,
-          name: 1
-        },
-        {
-          value: 0,
-          name: 2
-        },
-        {
-          value: -1,
-          name: 3
-        }
-      ]
-    },
-    {
-      name: 'Player 3',
-      series: [
-        {
-          value: 0,
-          name: 0
-        },
-        {
-          value: -1,
-          name: 1
-        },
-        {
-          value: -2,
-          name: 2
-        },
-        {
-          value: -2,
-          name: 3
-        }
-      ]
-    }
-  ];
-
-  formatYAxisTick(value) {
-    console.log(value);
-    if (Number.isInteger(value)) {
-      return value;
-    } else {
-      return '';
-    }
-  }
 
   constructor(private ngZone: NgZone) {
   }
@@ -144,22 +68,14 @@ export class AppComponent implements OnInit {
     const CHART_CHANNEL = 'urn:x-cast:nz.co.olliechick.scumgraph.chart';
     context.addCustomMessageListener(CHART_CHANNEL, customEvent => {
       this.ngZone.run(() => this.mode = 'chart');
+      this.chartData = customEvent.data.playerHistories;
     });
 
     context.start();
   }
 
-  addPlayer() { // for debugging purposes only
-    // this.players.push({name: 'New player', colour: '#ffbfa9'});
-    const players = [
-      {name: 'test', colour: '#f298ff'},
-      {name: '', colour: '#2a2a2a'},
-      {name: '', colour: '#2a2a2a'},
-      {name: '', colour: '#2a2a2a'}
-    ];
-    this.ngZone.run(() => this.players = players);
-
-    this.updateRows();
+  formatAxisTick(value) {
+    return Number.isInteger(value) ? value : '';
   }
 
   updateRows() {
@@ -192,6 +108,4 @@ export class AppComponent implements OnInit {
     const yiq = (red * 299 + green * 587 + blue * 114) / 1000;
     return yiq < 192 ? 'white' : 'black';
   }
-
-
 }
