@@ -2,3 +2,10 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+/* Make lines in line chart thick, with rounded ends */
+g.line-chart > g:last-of-type > g:nth-child(n) g.line-series > path {
+  stroke-width: 10;
+  stroke-linecap: round;
+}
