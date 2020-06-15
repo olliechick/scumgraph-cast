@@ -71,8 +71,10 @@ export class AppComponent implements OnInit {
 
     const CHART_CHANNEL = 'urn:x-cast:nz.co.olliechick.scumgraph.chart';
     context.addCustomMessageListener(CHART_CHANNEL, customEvent => {
-      this.ngZone.run(() => this.mode = 'chart');
-      this.chartData = customEvent.data.playerHistories;
+      this.ngZone.run(() => {
+        this.mode = 'chart';
+        this.chartData = customEvent.data.playerHistories;
+      });
     });
 
     context.start();
