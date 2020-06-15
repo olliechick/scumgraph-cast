@@ -22,10 +22,7 @@ export class AppComponent implements OnInit {
   yAxisLabel = 'Score';
   showGridLines = false;
   xScaleMin = 0;
-
-  colorScheme = {
-    domain: ['#9370DB', '#87CEFA', '#FA8072', '#FF7F50', '#90EE90', '#9370DB'] // todo use colours specified by user
-  };
+  colourScheme = null;
 
   constructor(private ngZone: NgZone) {
   }
@@ -60,8 +57,15 @@ export class AppComponent implements OnInit {
     context.addCustomMessageListener(PLAYER_LIST_CHANNEL, customEvent => {
       this.ngZone.run(() => this.mode = 'player-selection');
       const players = customEvent.data.players;
-      players.forEach(item => item.colour = decimalToAARRGGBBHexTwosComplement(item.colour));
-      this.ngZone.run(() => this.players = players);
+      const colours = [];
+      players.forEach(item => {
+        item.colour = decimalToAARRGGBBHexTwosComplement(item.colour);
+        colours.push(item.colour);
+      });
+      this.ngZone.run(() => {
+        this.players = players;
+        this.colourScheme = {domain: colours};
+      });
       this.updateRows();
     });
 
