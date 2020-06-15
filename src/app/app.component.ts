@@ -57,15 +57,8 @@ export class AppComponent implements OnInit {
     context.addCustomMessageListener(PLAYER_LIST_CHANNEL, customEvent => {
       this.ngZone.run(() => this.mode = 'player-selection');
       const players = customEvent.data.players;
-      const colours = [];
-      players.forEach(item => {
-        item.colour = decimalToAARRGGBBHexTwosComplement(item.colour);
-        colours.push(item.colour);
-      });
-      this.ngZone.run(() => {
-        this.players = players;
-        this.colourScheme = {domain: colours};
-      });
+      players.forEach(item => item.colour = decimalToAARRGGBBHexTwosComplement(item.colour));
+      this.ngZone.run(() => this.players = players);
       this.updateRows();
     });
 
@@ -74,6 +67,7 @@ export class AppComponent implements OnInit {
       this.ngZone.run(() => {
         this.mode = 'chart';
         this.chartData = customEvent.data.playerHistories;
+        this.colourScheme = {domain: customEvent.data.colours.map(decimalToAARRGGBBHexTwosComplement)};
       });
     });
 
