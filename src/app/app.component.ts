@@ -6,12 +6,47 @@ import {Component, NgZone, OnInit} from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  players: { name: string, colour: string }[] = [];
-  rows: { name: string, colour: string }[][] = [];
   mode: 'none' | 'player-selection' | 'chart' = 'none';
-  chartData = null;
 
-  // options for the chart
+  // Data for player selection mode
+  players: { name: string, colour: string }[] = [];
+  // Example (for testing): [{name: 'Ollie', colour: '#4363d8'}, {name: 'Mia', colour: '#e6194b'}, {name: 'Noah', colour: '#3cb44b'}];
+  rows: { name: string, colour: string }[][] = [];
+
+  // Data for chart
+  chartData = null; // Example (for testing): [
+  //   {
+  //     name: 'Ollie',
+  //     series: [
+  //       {value: 0, name: 0},
+  //       {value: 1, name: 1},
+  //       {value: 2, name: 2},
+  //       {value: 3, name: 3},
+  //       {value: 3, name: 4}
+  //     ]
+  //   },
+  //   {
+  //     name: 'Mia',
+  //     series: [
+  //       {value: 0, name: 0},
+  //       {value: 0, name: 1},
+  //       {value: 0, name: 2},
+  //       {value: -1, name: 3},
+  //       {value: -2, name: 4}
+  //     ]
+  //   },
+  //   {
+  //     name: 'Noah',
+  //     series: [
+  //       {value: 0, name: 0},
+  //       {value: -1, name: 1},
+  //       {value: -2, name: 2},
+  //       {value: -2, name: 3},
+  //       {value: -1, name: 4}
+  //     ]
+  //   }
+  // ];
+  colourScheme = null; // Example (for testing): {domain: ['#4363d8', '#e6194b', '#3cb44b']};
   showXAxis = true;
   showYAxis = true;
   gradient = false;
@@ -22,7 +57,6 @@ export class AppComponent implements OnInit {
   yAxisLabel = 'Score';
   showGridLines = false;
   xScaleMin = 0;
-  colourScheme = null;
 
   constructor(private ngZone: NgZone) {
   }
