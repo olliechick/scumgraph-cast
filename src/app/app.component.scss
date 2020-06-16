@@ -28,7 +28,6 @@
 
 .card {
   flex: 1;
-  background-color: #fbfbfb;
   text-align: center;
   vertical-align: center;
 
@@ -44,4 +43,13 @@ h1 {
 
 .chart {
   height: calc(100% - 100px);
+}
+
+$stripe-colour-1: #6e7083;
+$stripe-colour-2: #cecece;
+
+.empty-card {
+  background-color: $stripe-colour-1;
+
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, $stripe-colour-2 35px, $stripe-colour-2 70px);
 }

@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   // Data for player selection mode
   players: { name: string, colour: string }[] = [];
   // Example (for testing): [{name: 'Ollie', colour: '#4363d8'}, {name: 'Mia', colour: '#e6194b'}, {name: 'Noah', colour: '#3cb44b'}];
-  rows: { name: string, colour: string }[][] = [];
+  rows: { name: string, colour: string, isEmpty: boolean }[][] = [];
 
   // Data for chart
   chartData = null; // Example (for testing): [
@@ -114,19 +114,19 @@ export class AppComponent implements OnInit {
 
   updateRows() {
     const emptyRow = [
-      {name: '', colour: '#2a2a2a'},
-      {name: '', colour: '#2a2a2a'},
-      {name: '', colour: '#2a2a2a'},
-      {name: '', colour: '#2a2a2a'}
+      {name: '', colour: '', isEmpty: true},
+      {name: '', colour: '', isEmpty: true},
+      {name: '', colour: '', isEmpty: true},
+      {name: '', colour: '', isEmpty: true}
     ];
 
-    const rows: { name: string, colour: string }[][] = [[...emptyRow]];
+    const rows: { name: string, colour: string, isEmpty: boolean }[][] = [[...emptyRow]];
     for (let i = 0; i < 4; i++) {
       rows.push([...emptyRow]);
     }
 
     this.players.forEach((player, i) => {
-      rows[Math.floor(i / 4)][i % 4] = player;
+      rows[Math.floor(i / 4)][i % 4] = {name: player.name, colour: player.colour, isEmpty: false};
     });
 
     this.ngZone.run(() => this.rows = rows);

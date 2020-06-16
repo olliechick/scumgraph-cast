@@ -4,9 +4,12 @@
 
     <div class="row" *ngFor="let row of rows">
       <ng-container *ngFor="let player of row">
-        <mat-card class="card"
+        <mat-card *ngIf="!player.isEmpty" class="card"
                   [style.backgroundColor]=player.colour
                   [style.color]="getTextColour(player.colour)"
+                  [style.font-size]="'1.5em'">{{player.name}}
+        </mat-card>
+        <mat-card *ngIf="player.isEmpty" class="card empty-card"
                   [style.font-size]="'1.5em'">{{player.name}}
         </mat-card>
       </ng-container>
