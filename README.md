@@ -18,5 +18,5 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 | Android | TV |
 |----|---|
-| ![phone1a](https://user-images.githubusercontent.com/6047072/84731266-70edd980-afec-11ea-88fd-de2fefce372e.png) | ![tv1a](https://user-images.githubusercontent.com/6047072/84731121-fa50dc00-afeb-11ea-873e-8ca3394b997a.png) |
-| ![phone2a](https://user-images.githubusercontent.com/6047072/84731264-6fbcac80-afec-11ea-9ee3-91b5f27756d8.png) | ![tv2a](https://user-images.githubusercontent.com/6047072/84731119-f9b84580-afeb-11ea-8951-81f0d4b2f13d.png) |
+| ![phone1a](https://user-images.githubusercontent.com/6047072/84731266-70edd980-afec-11ea-88fd-de2fefce372e.png) | ![tv2a](https://user-images.githubusercontent.com/6047072/84731119-f9b84580-afeb-11ea-8951-81f0d4b2f13d.png) |
+| ![phone2a](https://user-images.githubusercontent.com/6047072/84731264-6fbcac80-afec-11ea-9ee3-91b5f27756d8.png) | ![tv1a](https://user-images.githubusercontent.com/6047072/84731121-fa50dc00-afeb-11ea-873e-8ca3394b997a.png) |
