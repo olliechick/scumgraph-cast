@@ -15,5 +15,8 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Screenshots
-![player selection](https://user-images.githubusercontent.com/6047072/84624018-a46d2d00-af34-11ea-8015-2ed78063c6fd.png)
-![graph](https://user-images.githubusercontent.com/6047072/84624016-a33c0000-af34-11ea-9919-cb262286c762.png)
+
+| Android | TV |
+|----|---|
+| ![phone1a](https://user-images.githubusercontent.com/6047072/84731266-70edd980-afec-11ea-88fd-de2fefce372e.png) | ![tv1a](https://user-images.githubusercontent.com/6047072/84731121-fa50dc00-afeb-11ea-873e-8ca3394b997a.png) |
+| ![phone2a](https://user-images.githubusercontent.com/6047072/84731264-6fbcac80-afec-11ea-9ee3-91b5f27756d8.png) | ![tv2a](https://user-images.githubusercontent.com/6047072/84731119-f9b84580-afeb-11ea-8951-81f0d4b2f13d.png) |
