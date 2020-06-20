@@ -14,13 +14,13 @@
         </mat-card>
       </ng-container>
     </div>
-<!--    <div style="text-align:center">v 2020-06-15 9:45pm</div>-->
+<!--    <div style="text-align:center">v 2020-06-20 2:30pm</div>-->
   </div>
   <div *ngIf="mode == 'chart'" class="chart">
     <h1>Scum graph</h1>
     <ngx-charts-line-chart
       [scheme]="colourScheme"
-      [results]="chartData"
+      [results]="playerHistories"
       [gradient]="gradient"
       [xAxis]="showXAxis"
       [yAxis]="showYAxis"
@@ -43,6 +43,6 @@
       Are you viewing this on something that isn't a Chromecast?
       Go to <a href="https://olliechick.co.nz/scumgraph">olliechick.co.nz/scumgraph</a> for more information.
     </p>
-<!--    <div style="text-align:center">v 2020-06-15 9:45pm</div>-->
+<!--    <div style="text-align:center">v 2020-06-20 2:30pm</div>-->
   </div>
 </div>

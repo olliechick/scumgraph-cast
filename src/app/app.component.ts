@@ -1,4 +1,5 @@
 import {Component, NgZone, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 interface PlayerHistory {
   name: string;
@@ -11,6 +12,18 @@ interface PlayerHistory {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  constructor(private ngZone: NgZone, private route: ActivatedRoute) {
+    this.route.queryParams.subscribe(params => {
+      if (params.chartdata) {
+        this.mode = 'chart';
+        const chartData = JSON.parse(decodeURIComponent(params.chartdata));
+        this.playerHistories = chartData.playerHistories;
+        this.playerHistories = AppComponent.appendScoresToPlayerNames(this.playerHistories);
+        this.colourScheme = {domain: chartData.colours.map(AppComponent.decimalToAARRGGBBHexTwosComplement)};
+      }
+    });
+  }
+
   mode: 'none' | 'player-selection' | 'chart' = 'none';
 
   // Data for player selection mode
@@ -19,7 +32,7 @@ export class AppComponent implements OnInit {
   rows: { name: string, colour: string, isEmpty: boolean }[][] = [];
 
   // Data for chart
-  chartData: PlayerHistory[] = null; // Example (for testing): [
+  playerHistories: PlayerHistory[] = null; // Example (for testing): [
   //   {
   //     name: 'Ollie',
   //     series: [
@@ -63,60 +76,57 @@ export class AppComponent implements OnInit {
   showGridLines = true;
   xScaleMin = 0;
 
-  constructor(private ngZone: NgZone) {
+  static padAndChop(str, padChar, length) {
+    return (Array(length).fill(padChar).join('') + str).slice(length * -1);
+  }
+
+  static decimalToAARRGGBBHexTwosComplement(value) {
+    let binaryStr;
+    const bitCount = 8 * 4;
+
+    if (value >= 0) {
+      const twosComp = value.toString(2);
+      binaryStr = AppComponent.padAndChop(twosComp, '0', (bitCount || twosComp.length));
+    } else {
+      binaryStr = (Math.pow(2, bitCount) + value).toString(2);
+
+      if (Number(binaryStr) < 0) {
+        return undefined;
+      }
+    }
+
+    return '#' + parseInt(binaryStr, 2).toString(16).slice(2);
+  }
+
+  static appendScoresToPlayerNames(playerHistories: PlayerHistory[]): PlayerHistory[] {
+    playerHistories.forEach(playerHistory => {
+      const score = playerHistory.series[playerHistory.series.length - 1].value;
+      playerHistory.name = playerHistory.name + ' (score: ' + score.toString() + ')';
+    });
+    return playerHistories;
   }
 
   ngOnInit() {
     this.updateRows();
     const context = cast.framework.CastReceiverContext.getInstance();
 
-    function padAndChop(str, padChar, length) {
-      return (Array(length).fill(padChar).join('') + str).slice(length * -1);
-    }
-
-    function decimalToAARRGGBBHexTwosComplement(value) {
-      let binaryStr;
-      const bitCount = 8 * 4;
-
-      if (value >= 0) {
-        const twosComp = value.toString(2);
-        binaryStr = padAndChop(twosComp, '0', (bitCount || twosComp.length));
-      } else {
-        binaryStr = (Math.pow(2, bitCount) + value).toString(2);
-
-        if (Number(binaryStr) < 0) {
-          return undefined;
-        }
-      }
-
-      return '#' + parseInt(binaryStr, 2).toString(16).slice(2);
-    }
-
     const PLAYER_LIST_CHANNEL = 'urn:x-cast:nz.co.olliechick.scumgraph.playerlist';
     context.addCustomMessageListener(PLAYER_LIST_CHANNEL, customEvent => {
       this.ngZone.run(() => this.mode = 'player-selection');
       const players = customEvent.data.players;
-      players.forEach(item => item.colour = decimalToAARRGGBBHexTwosComplement(item.colour));
+      players.forEach(item => item.colour = AppComponent.decimalToAARRGGBBHexTwosComplement(item.colour));
       this.ngZone.run(() => this.players = players);
       this.updateRows();
     });
 
     const CHART_CHANNEL = 'urn:x-cast:nz.co.olliechick.scumgraph.chart';
 
-    function appendScoresToPlayerNames(playerHistories: PlayerHistory[]): PlayerHistory[] {
-      playerHistories.forEach(playerHistory => {
-        const score = playerHistory.series[playerHistory.series.length - 1].value;
-        playerHistory.name = playerHistory.name + ' (score: ' + score.toString() + ')';
-      });
-      return playerHistories;
-    }
-
     context.addCustomMessageListener(CHART_CHANNEL, customEvent => {
       this.ngZone.run(() => {
         this.mode = 'chart';
-        this.chartData = customEvent.data.playerHistories;
-        this.chartData = appendScoresToPlayerNames(this.chartData);
-        this.colourScheme = {domain: customEvent.data.colours.map(decimalToAARRGGBBHexTwosComplement)};
+        this.playerHistories = customEvent.data.playerHistories;
+        this.playerHistories = AppComponent.appendScoresToPlayerNames(this.playerHistories);
+        this.colourScheme = {domain: customEvent.data.colours.map(AppComponent.decimalToAARRGGBBHexTwosComplement)};
       });
     });
 
