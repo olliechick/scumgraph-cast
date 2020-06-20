@@ -55,7 +55,7 @@ export class AppComponent implements OnInit {
   xAxisLabel = 'Round';
   showYAxisLabel = true;
   yAxisLabel = 'Score';
-  showGridLines = false;
+  showGridLines = true;
   xScaleMin = 0;
 
   constructor(private ngZone: NgZone) {
