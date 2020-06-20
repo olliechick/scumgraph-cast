@@ -1,5 +1,10 @@
 import {Component, NgZone, OnInit} from '@angular/core';
 
+interface PlayerHistory {
+  name: string;
+  series: { value: number, name: number }[];
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,7 +19,7 @@ export class AppComponent implements OnInit {
   rows: { name: string, colour: string, isEmpty: boolean }[][] = [];
 
   // Data for chart
-  chartData = null; // Example (for testing): [
+  chartData: PlayerHistory[] = null; // Example (for testing): [
   //   {
   //     name: 'Ollie',
   //     series: [
@@ -97,10 +102,20 @@ export class AppComponent implements OnInit {
     });
 
     const CHART_CHANNEL = 'urn:x-cast:nz.co.olliechick.scumgraph.chart';
+
+    function appendScoresToPlayerNames(playerHistories: PlayerHistory[]): PlayerHistory[] {
+      playerHistories.forEach(playerHistory => {
+        const score = playerHistory.series[playerHistory.series.length - 1].value;
+        playerHistory.name = playerHistory.name + ' (score: ' + score.toString() + ')';
+      });
+      return playerHistories;
+    }
+
     context.addCustomMessageListener(CHART_CHANNEL, customEvent => {
       this.ngZone.run(() => {
         this.mode = 'chart';
         this.chartData = customEvent.data.playerHistories;
+        this.chartData = appendScoresToPlayerNames(this.chartData);
         this.colourScheme = {domain: customEvent.data.colours.map(decimalToAARRGGBBHexTwosComplement)};
       });
     });
