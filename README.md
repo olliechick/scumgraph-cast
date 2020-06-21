@@ -2,7 +2,32 @@
 
 A Chromecast receiver app used by the Android app Scum graph, currently being developed at https://github.com/olliechick/scumgraph.
 
-This website is hosted at https://olliechick.co.nz/scumgraph-cast (although you can't do much if you visit this URL using a regular web browser).
+This website is hosted at https://olliechick.co.nz/scumgraph-cast.
+
+## Usage
+
+The app uses this website to display data on the Chromecast.
+
+You can also display graphs on this page by adding the query parameter `chartdata` (the app will soon have the ability to generate a URL with this query parameter containing the data from the current game). It should be in the format `[colours,player1,player2, ...]`, as explained below:
+
+| Component | Format |
+| ---- | ------ |
+| `colours` | `[colour1,colour2,colour3]`
+| `colour<n>` | number (negative two's complement of the colour hexcode)
+| `player<n>` | `[name,score1,score2,...]`
+| `name` | string
+| `score<n>` | number
+
+For example:
+```json
+[
+  [-12360744,-1697461,-12798901],
+  ["Ollie",0, 1, 2, 3, 3],
+  ["Mia",  0, 0, 0,-1,-2],
+  ["Noah", 0,-1,-2,-2,-1]
+]
+```
+Special characters have to be encoded, so the resulting URL would be http://localhost:4200/?chartdata=%5B%5B-12360744,-1697461,-12798901%5D,%5B%22Ollie%22,0,1,2,3,3%5D,%5B%22Mia%22,0,0,0,-1,-2%5D,%5B%22Noah%22,0,-1,-2,-2,-1%5D%5D
 
 ## Development
 

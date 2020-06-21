@@ -17,9 +17,16 @@ export class AppComponent implements OnInit {
       if (params.chartdata) {
         this.mode = 'chart';
         const chartData = JSON.parse(decodeURIComponent(params.chartdata));
-        this.playerHistories = chartData.playerHistories;
+        this.colourScheme = {domain: chartData[0].map(AppComponent.decimalToAARRGGBBHexTwosComplement)};
+        this.playerHistories = [];
+        chartData.slice(1).forEach(playerData => {
+          const playerHistory = {name: playerData[0], series: []};
+          playerData.slice(1).forEach((score, level) => {
+            playerHistory.series.push({value: score, name: level});
+          });
+          this.playerHistories.push(playerHistory);
+        });
         this.playerHistories = AppComponent.appendScoresToPlayerNames(this.playerHistories);
-        this.colourScheme = {domain: chartData.colours.map(AppComponent.decimalToAARRGGBBHexTwosComplement)};
       }
     });
   }
