@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
           this.playerHistories.push(playerHistory);
         });
         this.playerHistories = AppComponent.appendScoresToPlayerNames(this.playerHistories);
+        this.playerHistories = AppComponent.sortPlayersByCurrentScore(this.playerHistories);
       }
     });
   }
@@ -113,6 +114,14 @@ export class AppComponent implements OnInit {
     return playerHistories;
   }
 
+  static sortPlayersByCurrentScore(playerHistories: PlayerHistory[]): PlayerHistory[] {
+    return playerHistories.sort((history1, history2) => {
+      const score1 = history1.series[history1.series.length - 1].value;
+      const score2 = history2.series[history2.series.length - 1].value;
+      return score2 - score1;
+    });
+  }
+
   ngOnInit() {
     this.updateRows();
     const context = cast.framework.CastReceiverContext.getInstance();
@@ -133,6 +142,7 @@ export class AppComponent implements OnInit {
         this.mode = 'chart';
         this.playerHistories = customEvent.data.playerHistories;
         this.playerHistories = AppComponent.appendScoresToPlayerNames(this.playerHistories);
+        this.playerHistories = AppComponent.sortPlayersByCurrentScore(this.playerHistories);
         this.colourScheme = {domain: customEvent.data.colours.map(AppComponent.decimalToAARRGGBBHexTwosComplement)};
       });
     });
