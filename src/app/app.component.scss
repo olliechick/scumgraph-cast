@@ -1,10 +1,13 @@
-.main {
+.main-tv {
   border: 50px solid white;
   background-color: white;
-  //overflow: hidden;
-
   height: calc(100% - 100px);
 }
+
+.main-non-tv {
+   background-color: white;
+  height: calc(100% - 100px);
+ }
 
 .board {
   background: white;
@@ -41,8 +44,12 @@ h1 {
   text-align: center;
 }
 
-.chart {
+.chart-tv {
   height: calc(100% - 100px);
+}
+
+.chart-non-tv {
+  height: 100%;
 }
 
 $stripe-colour-1: #6e7083;

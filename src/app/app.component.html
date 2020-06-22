@@ -1,4 +1,4 @@
-<div class="main">
+<div [class]="screen == 'tv' ? 'main-tv' : 'main-non-tv'">
   <div *ngIf="mode == 'player-selection'" class="board">
     <h1>Add your players!</h1>
 
@@ -16,7 +16,7 @@
     </div>
 <!--    <div style="text-align:center">v 2020-06-20 2:30pm</div>-->
   </div>
-  <div *ngIf="mode == 'chart'" class="chart">
+  <div *ngIf="mode == 'chart'" [class]="screen == 'tv' ? 'chart-tv' : 'chart-non-tv'">
     <h1>Scum graph</h1>
     <ngx-charts-line-chart
       [scheme]="colourScheme"

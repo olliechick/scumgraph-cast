@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params.chartdata) {
         this.mode = 'chart';
+        this.screen = 'non-tv';
         const chartData = JSON.parse(decodeURIComponent(params.chartdata));
         this.colourScheme = {domain: chartData[0].map(AppComponent.decimalToAARRGGBBHexTwosComplement)};
         this.playerHistories = [];
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit {
   }
 
   mode: 'none' | 'player-selection' | 'chart' = 'none';
+  screen: 'tv' | 'non-tv' = 'tv';
 
   // Data for player selection mode
   players: { name: string, colour: string }[] = [];
