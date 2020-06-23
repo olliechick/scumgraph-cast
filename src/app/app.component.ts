@@ -17,8 +17,8 @@ export class AppComponent implements OnInit {
       if (params.chartdata) {
         this.mode = 'chart';
         this.screen = 'non-tv';
+
         const chartData = JSON.parse(decodeURIComponent(params.chartdata));
-        this.colourScheme = {domain: chartData[0].map(AppComponent.decimalToAARRGGBBHexTwosComplement)};
         this.playerHistories = [];
         chartData.slice(1).forEach(playerData => {
           const playerHistory = {name: playerData[0], series: []};
@@ -28,7 +28,11 @@ export class AppComponent implements OnInit {
           this.playerHistories.push(playerHistory);
         });
         this.playerHistories = AppComponent.appendScoresToPlayerNames(this.playerHistories);
-        this.playerHistories = AppComponent.sortPlayersByCurrentScore(this.playerHistories);
+        this.colourScheme = {domain: chartData[0].map(AppComponent.decimalToAARRGGBBHexTwosComplement)};
+
+        const sortedData = AppComponent.sortPlayersByCurrentScore(this.playerHistories, this.colourScheme.domain);
+        this.playerHistories = sortedData[0];
+        this.colourScheme.domain = sortedData[1];
       }
     });
   }
@@ -116,12 +120,24 @@ export class AppComponent implements OnInit {
     return playerHistories;
   }
 
-  static sortPlayersByCurrentScore(playerHistories: PlayerHistory[]): PlayerHistory[] {
-    return playerHistories.sort((history1, history2) => {
-      const score1 = history1.series[history1.series.length - 1].value;
-      const score2 = history2.series[history2.series.length - 1].value;
+  static sortPlayersByCurrentScore(playerHistories: PlayerHistory[], colours: string[]): [PlayerHistory[], string[]] {
+    const combined = [];
+    for (let i = 0; i < playerHistories.length; i++) {
+      combined.push({playerHistory: playerHistories[i], colour: colours[i]});
+    }
+
+    combined.sort((c1, c2) => {
+      const score1 = c1.playerHistory.series[c1.playerHistory.series.length - 1].value;
+      const score2 = c2.playerHistory.series[c2.playerHistory.series.length - 1].value;
       return score2 - score1;
     });
+
+    for (let i = 0; i < combined.length; i++) {
+      playerHistories[i] = combined[i].playerHistory;
+      colours[i] = combined[i].colour;
+    }
+
+    return [playerHistories, colours];
   }
 
   ngOnInit() {
@@ -142,10 +158,14 @@ export class AppComponent implements OnInit {
     context.addCustomMessageListener(CHART_CHANNEL, customEvent => {
       this.ngZone.run(() => {
         this.mode = 'chart';
+
         this.playerHistories = customEvent.data.playerHistories;
         this.playerHistories = AppComponent.appendScoresToPlayerNames(this.playerHistories);
-        this.playerHistories = AppComponent.sortPlayersByCurrentScore(this.playerHistories);
         this.colourScheme = {domain: customEvent.data.colours.map(AppComponent.decimalToAARRGGBBHexTwosComplement)};
+
+        const sortedData = AppComponent.sortPlayersByCurrentScore(this.playerHistories, this.colourScheme.domain);
+        this.playerHistories = sortedData[0];
+        this.colourScheme.domain = sortedData[1];
       });
     });
 
