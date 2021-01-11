@@ -8,7 +8,7 @@ This website is hosted at https://olliechick.co.nz/scumgraph/graph.
 
 The app uses this website to display data on the Chromecast.
 
-You can also display graphs on this page by adding the query parameter `chartdata` (the app will soon have the ability to generate a URL with this query parameter containing the data from the current game). It should be in the format `[colours,player1,player2, ...]`, as explained below:
+You can also display graphs on this page by adding the query parameter `chartdata` (the app has the ability to generate a URL with this query parameter containing the data from the current game). It should be in the format `[colours,player1,player2, ...]`, as explained below:
 
 | Component | Format |
 | ---- | ------ |
