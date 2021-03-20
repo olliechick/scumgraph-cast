@@ -23,7 +23,9 @@ export class AppComponent implements OnInit {
         chartData.slice(1).forEach(playerData => {
           const playerHistory = {name: playerData[0], series: []};
           playerData.slice(1).forEach((score, level) => {
-            playerHistory.series.push({value: score, name: level});
+            if (score !== null) {
+              playerHistory.series.push({value: score, name: level});
+            }
           });
           this.playerHistories.push(playerHistory);
         });
